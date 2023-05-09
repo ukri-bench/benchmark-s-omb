@@ -1,63 +1,68 @@
-=========================================================
-OSU MPI Benchmark Suite
-=========================================================
+#  OSU Micro-Benchmark
 
-The OSU benchmark suite tests the performance of MPI communication functions.
+The OSU micro-benchmark suite (OMB) tests the performance of
+network communication functions for MPI and other communication interfaces.
 
 The Offeror should not modify the benchmark code for this benchmark.
 
-A simple Makefile is provided which may be modified to support the local
-compilation/MPI runtime environment.
+## Installation
 
-The following benchmarks are included in the NERSC-10 testing:
+The OMB source code is distributed by the
+[MVAPICH website](https://mvapich.cse.ohio-state.edu/benchmarks/).
+It can be downloaded and unpacked using the commands
+```bash
+wget https://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-7.1-1.tar.gz
+tar -xzf osu-micro-benchmarks-7.1-1.tar.gz
+```
 
-* osu_latency
-* osu_bibw
-* osu_mbw_mr
-* osu_get_acc_latency
-* osu_allreduce
-* osu_alltoall
+Compiling the OMB tests for CPUs follows the common configure-make procedure:
+```bash
+./configure CC=/path/to/mpicc CXX=/path/to/mpicxx
+make
+make install
+```
 
-=========================================================
+OMB also supports the GPUs through ROCm, CUDA and OpenACC extensions.
+The file `osu-micro-benchmarks-7.1.1/README`
+provides several examples of compiling with these extensions.
 
-II. Running Benchmarks
+## Required Tests
 
-#osu_latency
-Number of nodes: Two nodes are used in this test.  The nodes should be the maximum distance (number of hops) apart in the network topology.
-Ranks per node, accelerator, NIC: Testing is done with a single rank per node.  On systems which include accelerators, the device option will be used to measure latency to and from device memory.
-Message size: 8B
+The full OMB suite tests numerous communication patterns.
+Only the benchmarks listed in the following table are required
+for NERSC-10 testing:
 
-* osu_bibw
-Number of nodes: Two nodes are used in this test.  The nodes should be the maximum distance (number of hops) apart in the network topology.
-Ranks per Node, Accelerator, NIC: Testing is done with a single rank per node.  On systems which include accelerators, the device option will be used to measure bandwidth to and from device memory.
-Message size: 1MB
+| Test                | Message <br> Size | Nodes <br> Used | Ranks <br> Used |
+|---                  |---                |--- |--- |
+| osu_latency         |  8  B | 2 | 1 per node |
+| osu_bibw            |  1 MB | 2 | 1 per node |
+| osu_mbw_mr          | 16 KB | 2 | Host-to-Host (two tests) :<br>     1 per NIC<br>    1 per core <br> Device-to-Device:<br>    1 per accelerator |
+| osu_get_acc_latency |  8  B | 2 | 1 per node |
+| osu_allreduce       | 8B, 25 MB | full-system | 1 per NIC |
+| osu_alltoall        |  1 MB | full-system | 1 per NIC | 
 
-* osu_mbw_mr
-Number of nodes: Two nodes are used in this test.  The nodes should be the maximum distance (number of hops) apart in the network topology.
-Ranks per Node, Accelerator, NIC: Testing is done with two nodes.  For a host-to-host test one rank per NIC and one rank per core.  On systems which include accelerators, the device option will be used with one rank per accelerator..
-Message size: 16KB
+For the point-to-point tests (those that that use two (2) nodes),
+the nodes should be the maximum distance (number of hops) apart
+in the network topology.
 
-* osu_get_acc_latency
-Number of nodes: Two nodes are used in this test.  The nodes should be the maximum distance (number of hops) apart in the network topology.
-Ranks per Node, Accelerator, NIC: Testing is done with a single rank per node.  On systems which include accelerators, the device option will be used to measure latency to and from device memory.
-Message size: 8B
+On systems that include accelerator devices,
+the tests should be executed twice:
+once to test performance to and from host memory,
+and again to to measure latency to and from device memory.
+Toggling between these tests is controlled by (**Help me, Taylor**).
+by the"device" option described below.
 
-* osu_allreduce
-Number of nodes: This is a full system test.  
-Ranks per Node, Accelerator, NIC: Testing is done with a single rank per NIC.  On systems which include accelerators, the device option will be used to measure performance to and from device memory.
-Message size: 8B, 25MB
+## Execution
 
-* osu_alltoall
-Number of nodes: This test runs across the full system and must not be a power of two..  
-Ranks per Node, Accelerator, NIC: Testing is done with a single rank per NIC.  On systems which include accelerators, the device option will be used to measure performance to and from device memory.
-Message size: 1MB
+**@TAYLOR, I need your help filling in this section.
+In particular, I don't know how to use the device option for p2p or collectives.
+Are these compile-time options, runtime-options or both? We need an example of what we expect people to do.**
 
-=========================================================
+## Reporting Results
 
-III. Reporting Results
 Note that the benchmark will generate more output data than is requested, the
-offeror needs only to report the benchmark values requested (but is free
-to provide additional data if desired).
+offeror needs only to report the benchmark values requested.
+Additional data may be provided if desired.
 
 The offeror should provide a copy of the Makefile and configuration
 settings used for the benchmark results. 
@@ -68,4 +73,4 @@ which will be provided on the proposed machine.
 Reported results will be subject to acceptance testing using the NERSC-10
 benchmark on final delivered hardware.
 
-=========================================================
+
