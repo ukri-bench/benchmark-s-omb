@@ -36,7 +36,7 @@ for NERSC-10 testing:
 |---                  |---                |--- |--- |
 | osu_latency         |  8  B | 2 | 1 per node |
 | osu_bibw            |  1 MB | 2 | 1 per node |
-| osu_mbw_mr          | 16 KB | 2 | Host-to-Host (two tests) :<br>     1 per NIC<br>    1 per core <br> Device-to-Device:<br>    1 per accelerator |
+| osu_mbw_mr          | 16 KB | 2 | Host-to-Host (two tests) :<br> - 1 per NIC<br> - 1 per core <br> Device-to-Device:<br> - 1 per accelerator |
 | osu_get_acc_latency |  8  B | 2 | 1 per node |
 | osu_allreduce       | 8B, 25 MB | full-system | 1 per NIC |
 | osu_alltoall        |  1 MB | full-system | 1 per NIC | 
