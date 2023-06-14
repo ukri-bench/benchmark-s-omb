@@ -43,7 +43,7 @@ for NERSC-10 testing:
 |---                  |---        |---                |--- |--- |
 | osu_latency         | Point-to-Point <br> Latency |  8  B | 2 | 1 per node |
 | osu_bibw            | Point-to-Point <br> Bi-directional <br> bandwidth |  1 MB | 2 | 1 per node |
-| osu_mbw_mr          | Point-to-Point <br> Multi-Bandwidth & Message Rate | 16 KB | 2 | Host-to-Host (two tests) :<br>     1 per NIC<br>    1 per core <br> Device-to-Device (two tests):<br>    1 per NIC<br>    1 per accelerator |
+| osu_mbw_mr          | Point-to-Point <br> Multi-Bandwidth <br>& Message Rate | 16 KB | 2 | Host-to-Host (two tests) :<br>     - 1 per NIC<br>    - 1 per core <br> Device-to-Device (two tests):<br>    - 1 per NIC<br>    - 1 per accelerator |
 | osu_get_acc_latency | Point-to-Point <br> One-sided Accumulate Latency |  8  B | 2 | 1 per node |
 | osu_allreduce       | All-reduce Latency | 8B, 25 MB | full-system | 1 per NIC |
 | osu_alltoall        | All-to-all Latency |  1 MB | full-system | 1 per NIC | 
@@ -57,7 +57,7 @@ the tests should be executed twice:
 once to test performance to and from host memory,
 and again to to measure latency to and from device memory.
 Toggling between these tests requires configuring and compiling with the appropriate option (see ./configure --help).  
-An example of this for CUDA would be configuring --enable-cuda=basic --with-cuda=[CUDA installation path], 
+An example of this for CUDA would be configuring `--enable-cuda=basic --with-cuda=[CUDA installation path]`, 
 as well as providing paths and linking to the appropriate libraries.
 
 ## Execution
@@ -94,7 +94,7 @@ the architecture of the target system as follows:
 - For tests using accelerator devices (`run_[p2p,coll]_accel.sh`),
   specify the device interface interface to be used 
   by providing the appropriate option to the `osu_<test>` command
-  (i.e. `-d[ROCm,CUDA,OpenACC] ).
+  (i.e. `-d[ROCm,CUDA,OpenACC]` ).
 
 OMB provides a script named `get_local_rank` 
 that may (optionally) used as a wrapper function
@@ -119,7 +119,7 @@ The `-x` option should not be used to exclude warmup iterations;
 results should include the warmup iterations.  
 If the test is using device memory, 
 then it is enabled by the `-d` device option 
-with the appropriate interface (e.g. -d [ROCm, CUDA, OpenACC] D D).
+with the appropriate interface (e.g. `-d [ROCm, CUDA, OpenACC] D D`).
 
 ## Reporting Results
 
