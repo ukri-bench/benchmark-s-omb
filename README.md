@@ -32,14 +32,15 @@ The full OMB suite tests numerous communication patterns.
 Only the benchmarks listed in the following table are required
 for NERSC-10 testing:
 
-| Test                | Message <br> Size | Nodes <br> Used | Ranks <br> Used |
-|---                  |---                |--- |--- |
-| osu_latency         |  8  B | 2 | 1 per node |
-| osu_bibw            |  1 MB | 2 | 1 per node |
-| osu_mbw_mr          | 16 KB | 2 | Host-to-Host (two tests) :<br> - 1 per NIC<br> - 1 per core <br> Device-to-Device:<br> - 1 per accelerator |
-| osu_get_acc_latency |  8  B | 2 | 1 per node |
-| osu_allreduce       | 8B, 25 MB | full-system | 1 per NIC |
-| osu_alltoall        |  1 MB | full-system, odd process count | 1 per NIC | 
+
+| Test                |Description| Message <br> Size | Nodes <br> Used | Ranks <br> Used |
+|---                  |---        |---                |--- |--- |
+| osu_latency         | Point-to-Point <br> Latency |  8  B | 2 | 1 per node |
+| osu_bibw            | Point-to-Point <br> Bi-directional <br> bandwidth |  1 MB | 2 | 1 per node |
+| osu_mbw_mr          | Point-to-Point <br> Multi-Bandwidth & Message Rate | 16 KB | 2 | Host-to-Host (two tests) :<br>     1 per NIC<br>    1 per core <br> Device-to-Device (two tests):<br>    1 per NIC<br>    1 per accelerator |
+| osu_get_acc_latency | Point-to-Point <br> One-sided Accumulate Latency |  8  B | 2 | 1 per node |
+| osu_allreduce       | All-reduce Latency | 8B, 25 MB | full-system | 1 per NIC |
+| osu_alltoall        | All-to-all Latency |  1 MB | full-system | 1 per NIC | 
 
 For the point-to-point tests (those that that use two (2) nodes),
 the nodes should be the maximum distance (number of hops) apart
