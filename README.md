@@ -36,10 +36,10 @@ for NERSC-10 testing:
 |---                  |---                |--- |--- |
 | osu_latency         |  8  B | 2 | 1 per node |
 | osu_bibw            |  1 MB | 2 | 1 per node |
-| osu_mbw_mr          | 16 KB | 2 | Host-to-Host (two tests) :<br>     1 per NIC<br>    1 per core <br> Device-to-Device:<br>    1 per accelerator |
+| osu_mbw_mr          | 16 KB | 2 | Host-to-Host (two tests) :<br> - 1 per NIC<br> - 1 per core <br> Device-to-Device:<br> - 1 per accelerator |
 | osu_get_acc_latency |  8  B | 2 | 1 per node |
 | osu_allreduce       | 8B, 25 MB | full-system | 1 per NIC |
-| osu_alltoall        |  1 MB | full-system | 1 per NIC | 
+| osu_alltoall        |  1 MB | full-system, odd process count | 1 per NIC | 
 
 For the point-to-point tests (those that that use two (2) nodes),
 the nodes should be the maximum distance (number of hops) apart
@@ -49,14 +49,14 @@ On systems that include accelerator devices,
 the tests should be executed twice:
 once to test performance to and from host memory,
 and again to to measure latency to and from device memory.
-Toggling between these tests is controlled by (**Help me, Taylor**).
-by the"device" option described below.
+Toggling between these tests requires configuring and compiling with the appropriate option (see ./configure --help).  
+An example of this for CUDA would be configuring --enable-cuda=basic --with-cuda=[CUDA installation path], 
+as well as providing paths and linking to the appropriate libraries.
 
 ## Execution
-
-**@TAYLOR, I need your help filling in this section.
-In particular, I don't know how to use the device option for p2p or collectives.
-Are these compile-time options, runtime-options or both? We need an example of what we expect people to do.**
+For each test, specific runtime options to control the execution can be viewed by supplying the --help option.
+The number of iterations should be the default number (1000 for small messages and 100 for large).  The results should include the warmup iterations.  These should not be thrown away (e.g. -x option). 
+If the test is using device memory, then it is enabled by the -d device option with the appropriate interface (e.g. -d [ROCm, CUDA, OpenACC] D D)
 
 ## Reporting Results
 
