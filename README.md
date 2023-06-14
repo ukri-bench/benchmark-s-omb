@@ -26,6 +26,12 @@ OMB also supports the GPUs through ROCm, CUDA and OpenACC extensions.
 The file `osu-micro-benchmarks-7.1.1/README`
 provides several examples of compiling with these extensions.
 
+The script `build.sh` shows how the preceding steps were adapted 
+for NERSC's Perlmutter system. 
+It is provided for convenience and is not intended to prescribe 
+how to build the OMB benchmarks. 
+It may be modified as needed for different architectures or compilers.
+
 ## Required Tests
 
 The full OMB suite tests numerous communication patterns.
@@ -55,21 +61,77 @@ An example of this for CUDA would be configuring --enable-cuda=basic --with-cuda
 as well as providing paths and linking to the appropriate libraries.
 
 ## Execution
-For each test, specific runtime options to control the execution can be viewed by supplying the --help option.
-The number of iterations should be the default number (1000 for small messages and 100 for large).  The results should include the warmup iterations.  These should not be thrown away (e.g. -x option). 
-If the test is using device memory, then it is enabled by the -d device option with the appropriate interface (e.g. -d [ROCm, CUDA, OpenACC] D D)
+
+Examples of job scripts that run the required tests
+are located in the `run` directory.
+The job scripts should be edited to reflect
+the architecture of the target system as follows:
+
+- For all tests (`run_*.sh`), 
+  specify the number of NICs per node
+  by setting the `j` variable`.
+
+- For point-to-point tests (`run_p2p_[host,accel].sh`),
+  specify a pair of maximally distant nodes
+  by setting the `SBATCH -w` option.
+  Note that selection of an appropriate pair of nodes
+  requires knowing the nodes' placement on the network topology.
+  Other mechanisms for controling node placement (besides `-w`)
+  may be used if available.
+
+- For tests of collective operations (`run_coll_[host,accel].sh`), 
+  specify the number of nodes in the full system 
+  by setting the `SBATCH -N` option.
+
+- For point-to-point tests between host processors (`run_p2p_host.sh`),
+  specify the number of CPU cores per node
+  by setting the `k` variable.
+
+- For tests using accelerator devices (`run_[p2p,coll]_accel.sh`),
+  specify the number of devices per node
+  by setting the `a` variable.
+
+- For tests using accelerator devices (`run_[p2p,coll]_accel.sh`),
+  specify the device interface interface to be used 
+  by providing the appropriate option to the `osu_<test>` command
+  (i.e. `-d[ROCm,CUDA,OpenACC] ).
+
+OMB provides a script named `get_local_rank` 
+that may (optionally) used as a wrapper function
+when launching the OMB tests.
+It's purpose is to define an the `LOCAL_RANK` environment variable 
+before starting the target executable (e.g. `osu_latency`).
+`LOCAL_RANK` enumerates the ranks on each node 
+so that the MPI library can control affinity between ranks and processors.
+Different MPI launchers expose the local rank information in different ways, 
+and `osu-micro-benchmarks-7.1-1/c/get_local_rank` 
+should be modified accordingly.
+Notes describing the appropriate modifications are included 
+within the `get_local_rank` script.
+On Perlmutter, MPI jobs are started using the SLURM PMI,
+and the `LOCAL_RANK` may be set using
+`export LOCAL_RANK=$SLURM_LOCALID`.
+
+Runtime options to control the execution of each test 
+can be viewed by supplying the `--help` option.
+The number of iterations (`-i`) should be changed from its default value.
+The `-x` option should not be used to exclude warmup iterations;
+results should include the warmup iterations.  
+If the test is using device memory, 
+then it is enabled by the `-d` device option 
+with the appropriate interface (e.g. -d [ROCm, CUDA, OpenACC] D D).
 
 ## Reporting Results
 
-Note that the benchmark will generate more output data than is requested, the
-offeror needs only to report the benchmark values requested.
+Note that the benchmark will generate more output data than is requested, 
+the offeror needs only to report the benchmark values requested.
 Additional data may be provided if desired.
 
 The offeror should provide a copy of the Makefile and configuration
 settings used for the benchmark results. 
 
 The benchmark should be compiled and run on the compiler and MPI environment
-which will be provided on the proposed machine.
+that will be provided on the proposed machine.
 
 Reported results will be subject to acceptance testing using the NERSC-10
 benchmark on final delivered hardware.
