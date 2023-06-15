@@ -22,10 +22,11 @@ OMB_COLL=${OMB_DIR}/mpi/collective/blocking
 #Compute the total number of tasks 
 #to run on the full system (n_any),
 #and the next smaller odd number (n_odd)
-n_any = $( SLURM_JOB_NUM_NODES * j )
-n_odd = n_any
-if( n_any % 2 ):
-  n_odd = n_any - 1
+n_any=$(( SLURM_JOB_NUM_NODES * j ))
+n_odd=$n_any
+if[ $(( n_any % 2 )) -eq 0 ]; then
+    n_odd=$(( n_any - 1 ))
+fi
 
 
 srun -N ${SLURM_NNODES} -n ${n_any} --ntasks-per-node=${j} \
