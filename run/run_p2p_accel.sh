@@ -23,8 +23,8 @@ a=4 #accelerator devices per node
 
 #The paths to OMB and its point-to-point benchmarks
 #should be specified here
-OMB_DIR=./osu-micro-benchmarks-7.1-1
-OMB_PT2PT=${OMB_DIR}/c/mpi/pt2pt/standard
+OMB_DIR=../libexec/osu-micro-benchmarks
+OMB_PT2PT=${OMB_DIR}/mpi/pt2pt/standard
 
 srun -N 2 -n 2 \
      ${OMB_DIR}/c/get_local_rank \

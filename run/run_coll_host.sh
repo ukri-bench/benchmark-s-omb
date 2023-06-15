@@ -15,8 +15,8 @@ j=1 #NICs per node
 
 #The paths to OMB and its collective benchmarks
 #should be specified here
-OMB_DIR=./osu-micro-benchmarks-7.1-1
-OMB_COLL=${OMB_DIR}/c/mpi/collective/blocking
+OMB_DIR=../libexec/osu-micro-benchmarks
+OMB_COLL=${OMB_DIR}/mpi/collective/blocking
 
 
 #Compute the total number of tasks 
