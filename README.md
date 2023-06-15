@@ -104,7 +104,7 @@ before starting the target executable (e.g. `osu_latency`).
 `LOCAL_RANK` enumerates the ranks on each node 
 so that the MPI library can control affinity between ranks and processors.
 Different MPI launchers expose the local rank information in different ways, 
-and `osu-micro-benchmarks-7.1-1/c/get_local_rank` 
+and `libexec/osu-micro-benchmarks/get_local_rank` 
 should be modified accordingly.
 Notes describing the appropriate modifications are included 
 within the `get_local_rank` script.
