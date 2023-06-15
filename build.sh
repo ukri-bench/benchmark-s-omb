@@ -11,7 +11,7 @@ cd $omb_version
 ./configure \
   CC=cc  \
   CXX=CC \
-  --prefix=$(omb_n10)/prefix
+  --prefix=$(omb_n10)/osu-micro-benchmarks-7.1-1-install
   --enable-cuda=basic \
   --with-cuda=$CUDA_HOME
 
