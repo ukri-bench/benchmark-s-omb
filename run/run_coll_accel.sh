@@ -6,7 +6,7 @@
 #SBATCH -q regular
 #SBATCH -t 00:30:00
 #SBATCH -A nstaff_g
-#SBATCH -G 4
+#SBATCH --gpus-per-node=4
 #
 #The -N option should be updated
 #to use the full-system complement of accelerated nodes

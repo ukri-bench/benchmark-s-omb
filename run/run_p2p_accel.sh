@@ -6,7 +6,7 @@
 #SBATCH -q regular
 #SBATCH -t 00:30:00
 #SBATCH -A nstaff_g
-#SBATCH -G 4
+#SBATCH --gpus-per-node=4
 ##SBATCH -w nid[001652,001716]
 #
 #The -w option specifies which nodes to use for the test,
@@ -27,21 +27,23 @@ OMB_DIR=../libexec/osu-micro-benchmarks
 OMB_PT2PT=${OMB_DIR}/mpi/pt2pt/standard
 
 srun -N 2 -n 2 \
-     ${OMB_DIR}/c/get_local_rank \
-     ./osu_latency -m 8:8 -x 0 D D
+     ${OMB_DIR}/get_local_rank \
+     ${OMB_PT2PT}/osu_latency -m 8:8 -x 0 D D
+
+return
 
 srun -N 2 -n 2 \
-     ${OMB_DIR}/c/get_local_rank \
-     ./osu_bw -m 1048576:1048576 -x 0 D D
+     ${OMB_DIR}/get_local_rank \
+     ${OMB_PT2PT}//osu_bw -m 1048576:1048576 -x 0 D D
 
 srun -N 2 --ntasks-per-node=${j} \
-     ${OMB_DIR}/c/get_local_rank  \
-     ./osu_mbw_mr -m 16384:16384 -x 0 D D
+     ${OMB_DIR}/get_local_rank  \
+     ${OMB_PT2PT}//osu_mbw_mr -m 16384:16384 -x 0 D D
 
 srun -N 2 --ntasks-per-node=${a} \
-     ${OMB_DIR}/c/get_local_rank  \
-     ./osu_mbw_mr -m 16384:16384 -x 0 D D
+     ${OMB_DIR}/get_local_rank  \
+     ${OMB_PT2PT}/osu_mbw_mr -m 16384:16384 -x 0 D D
 
 srun -N 2 -n 2 \
-     ${OMB_DIR}/c/get_local_rank \
+     ${OMB_DIR}/get_local_rank \
      ${OMB_PT2PT}/osu_get_acc_latency -m 8:8 -x 0 D D 
