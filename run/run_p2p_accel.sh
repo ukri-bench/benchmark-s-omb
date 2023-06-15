@@ -30,8 +30,6 @@ srun -N 2 -n 2 \
      ${OMB_DIR}/get_local_rank \
      ${OMB_PT2PT}/osu_latency -m 8:8 -x 0 D D
 
-return
-
 srun -N 2 -n 2 \
      ${OMB_DIR}/get_local_rank \
      ${OMB_PT2PT}//osu_bw -m 1048576:1048576 -x 0 D D
