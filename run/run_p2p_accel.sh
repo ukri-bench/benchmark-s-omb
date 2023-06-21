@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH -J OMB-Device-P2P
-#SBATCH -o OMB-Device-P2P-%j.out
+#SBATCH -J OMB_p2p_accel
+#SBATCH -o OMB_p2p_accel-%j.out
 #SBATCH -N 2
 #SBATCH -C gpu
 #SBATCH -q regular
@@ -24,7 +24,8 @@ a=4 #accelerator devices per node
 #The paths to OMB and its point-to-point benchmarks
 #should be specified here
 OMB_DIR=../libexec/osu-micro-benchmarks
-OMB_PT2PT=${OMB_DIR}/mpi/pt2pt/standard
+OMB_PT2PT=${OMB_DIR}/mpi/pt2pt
+OMB_1SIDE=${OMB_DIR}/mpi/one-sided
 
 srun -N 2 -n 2 \
      ${OMB_DIR}/get_local_rank \
@@ -36,7 +37,7 @@ srun -N 2 -n 2 \
 
 srun -N 2 --ntasks-per-node=${j} \
      ${OMB_DIR}/get_local_rank  \
-     ${OMB_PT2PT}//osu_mbw_mr -m 16384:16384 -x 0 D D
+     ${OMB_PT2PT}/osu_mbw_mr -m 16384:16384 -x 0 D D
 
 srun -N 2 --ntasks-per-node=${a} \
      ${OMB_DIR}/get_local_rank  \
@@ -44,4 +45,4 @@ srun -N 2 --ntasks-per-node=${a} \
 
 srun -N 2 -n 2 \
      ${OMB_DIR}/get_local_rank \
-     ${OMB_PT2PT}/osu_get_acc_latency -m 8:8 -x 0 D D 
+     ${OMB_1SIDE}/osu_get_acc_latency -m 8:8 -x 0 D D 

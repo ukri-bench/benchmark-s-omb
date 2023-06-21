@@ -17,10 +17,14 @@ tar -xzf osu-micro-benchmarks-7.1-1.tar.gz
 
 Compiling the OMB tests for CPUs follows the common configure-make procedure:
 ```bash
-./configure CC=/path/to/mpicc CXX=/path/to/mpicxx
+./configure CC=/path/to/mpicc CXX=/path/to/mpicxx --prefix=`pwd`
 make
 make install
 ```
+The `--prefix=`pwd` will cause OMB to be installed in the current working directory.
+In particular, it will create a directory named `libexec/osu-micro-benchmarks`
+where the benchmark executables will be found.
+
 
 OMB also supports the GPUs through ROCm, CUDA and OpenACC extensions.
 The file `osu-micro-benchmarks-7.1.1/README`
@@ -31,6 +35,22 @@ for NERSC's Perlmutter system.
 It is provided for convenience and is not intended to prescribe 
 how to build the OMB benchmarks. 
 It may be modified as needed for different architectures or compilers.
+
+OMB provides a script named `get_local_rank` 
+that may (optionally) used as a wrapper function
+when launching the OMB tests.
+Its purpose is to define an the `LOCAL_RANK` environment variable 
+before starting the target executable (e.g. `osu_latency`).
+`LOCAL_RANK` enumerates the ranks on each node 
+so that the MPI library can control affinity between ranks and processors.
+Different MPI launchers expose the local rank information in different ways, 
+and `libexec/osu-micro-benchmarks/get_local_rank` 
+should be modified accordingly.
+Notes describing the appropriate modifications are included 
+within the `get_local_rank` script.
+On Perlmutter, MPI jobs are started using the SLURM PMI,
+and the `LOCAL_RANK` may be set using
+`export LOCAL_RANK=$SLURM_LOCALID`.
 
 ## Required Tests
 
@@ -46,11 +66,18 @@ for NERSC-10 testing:
 | osu_mbw_mr          | Point-to-Point <br> Multi-Bandwidth <br>& Message Rate | 16 KB | 2 | Host-to-Host (two tests) :<br>     - 1 per NIC<br>    - 1 per core <br> Device-to-Device (two tests):<br>    - 1 per NIC<br>    - 1 per accelerator |
 | osu_get_acc_latency | Point-to-Point <br> One-sided Accumulate Latency |  8  B | 2 | 1 per node |
 | osu_allreduce       | All-reduce Latency | 8B, 25 MB | full-system | 1 per NIC |
-| osu_alltoall        | All-to-all Latency |  1 MB | full-system | 1 per NIC | 
+| osu_alltoall        | All-to-all Latency |  1 MB | full-system | 1 per NIC <br> odd process count | 
 
 For the point-to-point tests (those that that use two (2) nodes),
 the nodes should be the maximum distance (number of hops) apart
 in the network topology.
+
+For the all-to-all test, the total number of ranks must be odd
+in order to circumvent software optimizations
+that would avoid stressing the network bisection bandwidth.
+If the product Nodes_Used x NICs_per_node is even, then
+the number of ranks used should be one less than this product.
+
 
 On systems that include accelerator devices,
 the tests should be executed twice:
@@ -96,21 +123,6 @@ the architecture of the target system as follows:
   by providing the appropriate option to the `osu_<test>` command
   (i.e. `-d[ROCm,CUDA,OpenACC]` ).
 
-OMB provides a script named `get_local_rank` 
-that may (optionally) used as a wrapper function
-when launching the OMB tests.
-It's purpose is to define an the `LOCAL_RANK` environment variable 
-before starting the target executable (e.g. `osu_latency`).
-`LOCAL_RANK` enumerates the ranks on each node 
-so that the MPI library can control affinity between ranks and processors.
-Different MPI launchers expose the local rank information in different ways, 
-and `libexec/osu-micro-benchmarks/get_local_rank` 
-should be modified accordingly.
-Notes describing the appropriate modifications are included 
-within the `get_local_rank` script.
-On Perlmutter, MPI jobs are started using the SLURM PMI,
-and the `LOCAL_RANK` may be set using
-`export LOCAL_RANK=$SLURM_LOCALID`.
 
 Runtime options to control the execution of each test 
 can be viewed by supplying the `--help` option.

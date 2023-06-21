@@ -1,10 +1,10 @@
 #!/bin/bash
-#SBATCH -J OMB-Host-Collective
-#SBATCH -o OMB-Host-Collective-%j.out
-#SBATCH -N 2
+#SBATCH -J OMB_coll_host
+#SBATCH -o OMB_coll_host-%j.out
+#SBATCH -N 4
 #SBATCH -C cpu
 #SBATCH -q regular
-#SBATCH -t 00:30:00
+#SBATCH -t 00:05:00
 #SBATCH -A nstaff
 #
 #The -N option should be updated
@@ -16,26 +16,35 @@ j=1 #NICs per node
 #The paths to OMB and its collective benchmarks
 #should be specified here
 OMB_DIR=../libexec/osu-micro-benchmarks
-OMB_COLL=${OMB_DIR}/mpi/collective/blocking
+OMB_COLL=${OMB_DIR}/mpi/collective
 
 
-#Compute the total number of tasks 
+#Compute the total number of ranks
 #to run on the full system (n_any),
 #and the next smaller odd number (n_odd)
+N_any=$(( SLURM_JOB_NUM_NODES     ))
 n_any=$(( SLURM_JOB_NUM_NODES * j ))
+N_odd=$N_any
 n_odd=$n_any
-if[ $(( n_any % 2 )) -eq 0 ]; then
+if [ $(( n_any % 2 )) -eq 0 ]; then
     n_odd=$(( n_any - 1 ))
+    if [ $j -eq 1 ]; then
+	N_odd=$n_odd
+    fi
 fi
 
-
-srun -N ${SLURM_NNODES} -n ${n_any} --ntasks-per-node=${j} \
+echo -n Nodes:$N_any   Tasks:$n_any
+srun -N ${N_any} -n ${n_any} --ntasks-per-node=${j} \
      ${OMB_COLL}/osu_allreduce -m 8:8
+echo
 
-srun -N ${SLURM_NNODES} -n ${n_odd} --ntasks-per-node=${j} \
-     ${OMB_COLL}/osu_allreduce -m -m 26214400:26214400
+echo -n Nodes:$N_any   Tasks:$n_any
+srun -N ${N_any} -n ${n_any} --ntasks-per-node=${j} \
+     ${OMB_COLL}/osu_allreduce -m 26214400:26214400
+echo
 
-srun -N ${SLURM_NNODES} -n ${n_odd} --ntasks-per-node=${j} \
+echo -n Nodes:$N_odd   Tasks:$n_odd
+srun -N ${N_odd} -n ${n_odd} --ntasks-per-node=${j} \
      ${OMB_COLL}/osu_alltoall -m 1048576:1048576
-
+echo
 
