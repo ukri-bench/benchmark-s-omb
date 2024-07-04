@@ -1,5 +1,7 @@
 #  OSU Micro-Benchmark
 
+**Note:** This benchmark/repository is closely based on the one used for the [NERSC-10 benchmarks](https://www.nersc.gov/systems/nersc-10/benchmarks/)
+
 The OSU micro-benchmark suite (OMB) tests the performance of
 network communication functions for MPI and other communication interfaces.
 
@@ -31,7 +33,7 @@ The file `osu-micro-benchmarks-7.1.1/README`
 provides several examples of compiling with these extensions.
 
 The script `build.sh` shows how the preceding steps were adapted 
-for NERSC's Perlmutter system. 
+for the [ARCHER2](https://www.archer2.ac.uk) system at EPCC. 
 It is provided for convenience and is not intended to prescribe 
 how to build the OMB benchmarks. 
 It may be modified as needed for different architectures or compilers.
@@ -48,15 +50,14 @@ and `libexec/osu-micro-benchmarks/get_local_rank`
 should be modified accordingly.
 Notes describing the appropriate modifications are included 
 within the `get_local_rank` script.
-On Perlmutter, MPI jobs are started using the SLURM PMI,
+On ARCHER2, MPI jobs are started using the SLURM PMI,
 and the `LOCAL_RANK` may be set using
 `export LOCAL_RANK=$SLURM_LOCALID`.
 
 ## Required Tests
 
 The full OMB suite tests numerous communication patterns.
-Only the benchmarks listed in the following table are required
-for NERSC-10 testing:
+Only the benchmarks listed in the following table are required:
 
 
 | Test                |Description| Message <br> Size | Nodes <br> Used | Ranks <br> Used |
