@@ -5,7 +5,7 @@
 The OSU micro-benchmark suite (OMB) tests the performance of
 network communication functions for MPI and other communication interfaces.
 
-The Offeror should not modify the benchmark code for this benchmark.
+If being used for procurement, the biddershould not modify the benchmark code for this benchmark.
 
 ## Installation
 
