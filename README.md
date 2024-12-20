@@ -140,13 +140,11 @@ Note that the benchmark will generate more output data than is requested,
 the offeror needs only to report the benchmark values requested.
 Additional data may be provided if desired.
 
-The offeror should provide a copy of the Makefile and configuration
+The bidder should provide a copy of the Makefile and configuration
 settings used for the benchmark results. 
 
 The benchmark should be compiled and run on the compiler and MPI environment
 that will be provided on the proposed machine.
 
-Reported results will be subject to acceptance testing using the NERSC-10
-benchmark on final delivered hardware.
 
 
