@@ -19,11 +19,11 @@ tar -xzf osu-micro-benchmarks-7.1-1.tar.gz
 
 Compiling the OMB tests for CPUs follows the common configure-make procedure:
 ```bash
-./configure CC=/path/to/mpicc CXX=/path/to/mpicxx --prefix=`pwd`
+./configure CC=/path/to/mpicc CXX=/path/to/mpicxx --prefix=$(pwd)
 make
 make install
 ```
-The `--prefix=`pwd` will cause OMB to be installed in the current working directory.
+The `--prefix=$(pwd)` will cause OMB to be installed in the current working directory.
 In particular, it will create a directory named `libexec/osu-micro-benchmarks`
 where the benchmark executables will be found.
 
