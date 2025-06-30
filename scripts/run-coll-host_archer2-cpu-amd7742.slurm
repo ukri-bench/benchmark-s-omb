@@ -6,9 +6,8 @@
 #SBATCH --cpus-per-task=1
 
 #SBATCH --partition=standard
-#SBATCH --qos=short
+#SBATCH --qos=standard
 #SBATCH --account=z19
-#SBATCH --nodes=4
 #
 #The -N option should be updated
 #to use the full-system complement of CPU-only nodes
@@ -18,7 +17,7 @@ j=2 #NICs per node
 
 #The paths to OMB and its collective benchmarks
 #should be specified here
-OMB_DIR=../libexec/osu-micro-benchmarks
+OMB_DIR=/work/z19/z19/aturner/benchmark/LivingBenchmarks/OSU-MPI_7.5-1-GCC/libexec/osu-micro-benchmarks
 OMB_COLL=${OMB_DIR}/mpi/collective
 
 #Compute the total number of ranks
@@ -38,7 +37,7 @@ fi
 timestamp=$(date '+%Y%m%d%H%M')
 outfile="omb-host-coll_${N_any}nodes_${n_any}procs_${timestamp}.res"
 
-echo -n Nodes:$N_any   Tasks:$n_any > ${outfile}
+echo -n Nodes:$N_any   Tasks:$n_any   PerNode:$j > ${outfile}
 srun -N ${N_any} -n ${n_any} --ntasks-per-node=${j} \
      ${OMB_COLL}/osu_allreduce -m 8:8 >> ${outfile}
 echo
