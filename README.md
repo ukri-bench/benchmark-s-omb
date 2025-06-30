@@ -7,7 +7,37 @@ network communication functions for MPI and other communication interfaces.
 
 If being used for procurement, the biddershould not modify the benchmark code for this benchmark.
 
-## Installation
+## Status
+
+Stable
+
+## Maintainers
+
+- @aturner-epcc ([https://github.com/aturner-epcc](https://github.com/aturner-epcc))
+
+## Overview
+
+### Software
+
+- [https://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-7.1-1.tar.gz](https://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-7.1-1.tar.gz)
+
+### Architectures
+
+- CPU: x86, Arm
+- GPU: NVIDIA, AMD, Intel
+
+### Languages and programming models
+
+- Programming languages: C
+- Parallel models: MPI, CAF
+- Accelerator offload models: CUDA, ROCm, OpenACC
+
+## Building the benchmark
+
+At the moment, only manual build instructions are available. We plan to add Spack
+build instructions in the future.
+
+### Manual build
 
 The OMB source code is distributed by the
 [MVAPICH website](https://mvapich.cse.ohio-state.edu/benchmarks/).
@@ -32,11 +62,10 @@ OMB also supports the GPUs through ROCm, CUDA and OpenACC extensions.
 The file `osu-micro-benchmarks-7.1.1/README`
 provides several examples of compiling with these extensions.
 
-The script `build.sh` shows how the preceding steps were adapted 
-for the [ARCHER2](https://www.archer2.ac.uk) system at EPCC. 
-It is provided for convenience and is not intended to prescribe 
-how to build the OMB benchmarks. 
-It may be modified as needed for different architectures or compilers.
+We provide example build scripts for the benchmarks on selected systems. They are provided for
+convenience and is not intended to prescribe how to build the OMB benchmarks. 
+
+- [scripts/build-archer2-cpu-amd7742.sh](scripts/build-archer2-cpu-amd7742.sh)
 
 OMB provides a script named `get_local_rank` 
 that may (optionally) used as a wrapper function
@@ -50,11 +79,17 @@ and `libexec/osu-micro-benchmarks/get_local_rank`
 should be modified accordingly.
 Notes describing the appropriate modifications are included 
 within the `get_local_rank` script.
-On ARCHER2, MPI jobs are started using the SLURM PMI,
+
+As an example, on ARCHER2, MPI jobs are started using the SLURM PMI,
 and the `LOCAL_RANK` may be set using
 `export LOCAL_RANK=$SLURM_LOCALID`.
 
-## Required Tests
+## Running the benchmark
+
+At the moment, only manual run instructions are available. We plan to add ReFrame
+run instructions in the future.
+
+### Required Tests
 
 The full OMB suite tests numerous communication patterns.
 Only the benchmarks listed in the following table are required:
@@ -74,21 +109,21 @@ the nodes should be the maximum distance (number of hops) apart
 in the network topology.
 
 For the all-to-all test, the total number of ranks must be odd
-in order to circumvent software optimizations
+in order to circumvent software optimisations
 that would avoid stressing the network bisection bandwidth.
 If the product Nodes_Used x NICs_per_node is even, then
 the number of ranks used should be one less than this product.
-
 
 On systems that include accelerator devices,
 the tests should be executed twice:
 once to test performance to and from host memory,
 and again to to measure latency to and from device memory.
-Toggling between these tests requires configuring and compiling with the appropriate option (see ./configure --help).  
+Toggling between these tests requires configuring and compiling with the appropriate option (see `./configure --help`).  
+
 An example of this for CUDA would be configuring `--enable-cuda=basic --with-cuda=[CUDA installation path]`, 
 as well as providing paths and linking to the appropriate libraries.
 
-## Execution
+### Benchmark execution
 
 Examples of job scripts that run the required tests
 are located in the `run` directory.
@@ -140,11 +175,16 @@ Note that the benchmark will generate more output data than is requested,
 the offeror needs only to report the benchmark values requested.
 Additional data may be provided if desired.
 
-The bidder should provide a copy of the Makefile and configuration
+The offeror should provide a copy of the Makefile and configuration
 settings used for the benchmark results. 
 
 The benchmark should be compiled and run on the compiler and MPI environment
 that will be provided on the proposed machine.
+
+## License
+
+This benchmark description and associated files are released under the MIT license.
+
 
 
 
