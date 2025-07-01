@@ -28,6 +28,7 @@ jobs:
           spack install -j 4 --use-buildcache=package:never,dependencies:auto osu-micro-benchmarks
 
       - name: Run a OSU program multi-line script
+        shell: spack-bash {0}
         run: |
           spack load osu-micro-benchmarks
           mpiexec -n 3 $(spack location -i osu-micro-benchmarks)libexec/osu-micro-benchmarks/mpi/startup/osu_hello
