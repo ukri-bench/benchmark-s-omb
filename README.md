@@ -181,6 +181,30 @@ settings used for the benchmark results.
 The benchmark should be compiled and run on the compiler and MPI environment
 that will be provided on the proposed machine.
 
+## Example performance data
+
+### ARCHER2
+
+MPI collectives, 256 nodes, 2 MPI processes per node:
+
+```
+Nodes:256 Tasks:512 Per Node:2
+# OSU MPI Allreduce Latency Test v7.5
+# Datatype: MPI_INT.
+# Size       Avg Latency(us)
+8                      33.58
+
+# OSU MPI Allreduce Latency Test v7.5
+# Datatype: MPI_INT.
+# Size       Avg Latency(us)
+26214400            29942.75
+
+# OSU MPI All-to-All Personalized Exchange Latency Test v7.5
+# Datatype: MPI_CHAR.
+# Size       Avg Latency(us)
+1048576             87258.19
+```
+
 ## License
 
 This benchmark description and associated files are released under the MIT license.
