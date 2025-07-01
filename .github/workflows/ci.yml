@@ -1,28 +1,18 @@
-# This is a basic workflow to help you get started with Actions
+name: OMB tests
 
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-24.04
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
       - name: Set up Spack
@@ -30,16 +20,14 @@ jobs:
         with:
           ref: develop # Spack version (examples: develop, releases/v0.23)
           color: true # Force color output (SPACK_COLOR=always)
-          path: spack-src # Where to clone Spack      # - name: Get Spack
+          path: spack-src # Where to clone Spack
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
+      - name: Build and install
         shell: spack-bash {0}
         run: |
           spack install -j 4 --use-buildcache=package:never,dependencies:auto --add osu-micro-benchmarks
 
-      # # Runs a set of commands using the runners shell
-      # - name: Run a multi-line script
-      #   run: |
-      #     echo Add other actions to build,
-      #     echo test, and deploy your project.
+      # Run a program
+      - name: Run a multi-line script
+        run: |
+          mpiexec -n 3 $(spack location -i osu-micro-benchmarks)libexec/osu-micro-benchmarks/mpi/startup/osu_hello
