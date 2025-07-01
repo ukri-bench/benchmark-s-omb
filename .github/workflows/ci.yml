@@ -31,4 +31,4 @@ jobs:
         shell: spack-bash {0}
         run: |
           spack load osu-micro-benchmarks
-          mpiexec -n 3 $(spack location -i osu-micro-benchmarks)libexec/osu-micro-benchmarks/mpi/startup/osu_hello
+          mpiexec -n 3 $(spack location -i osu-micro-benchmarks)/libexec/osu-micro-benchmarks/mpi/startup/osu_hello
