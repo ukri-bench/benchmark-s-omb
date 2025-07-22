@@ -5,8 +5,7 @@
 The OSU micro-benchmark suite (OMB) tests the performance of network
 communication functions for MPI and other communication interfaces.
 
-If being used for procurement, the biddershould not modify the benchmark
-code for this benchmark.
+
 
 ## Status
 
@@ -37,6 +36,11 @@ Stable
 
 At the moment, only manual build instructions are available. We plan to add Spack
 build instructions in the future.
+
+### Permitted modifications
+
+If being used for procurement, the bidder should not modify the benchmark
+code for this benchmark.
 
 ### Manual build
 
