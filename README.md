@@ -19,7 +19,7 @@ Stable
 
 ### Software
 
-- [https://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-7.1-1.tar.gz](https://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-7.1-1.tar.gz)
+- [https://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-7.5-1.tar.gz](https://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-7.5-1.tar.gz)
 
 ### Architectures
 
@@ -48,8 +48,8 @@ The OMB source code is distributed by the [MVAPICH
 website](https://mvapich.cse.ohio-state.edu/benchmarks/). It can be
 downloaded and unpacked using the commands
 ```bash
-wget https://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-7.1-1.tar.gz
-tar -xzf osu-micro-benchmarks-7.1-1.tar.gz
+wget https://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-7.5-1.tar.gz
+tar -xzf osu-micro-benchmarks-7.5-1.tar.gz
 ```
 
 Compiling the OMB tests for CPUs follows the common configure-make
@@ -66,7 +66,7 @@ found.
 
 
 OMB also supports the GPUs through ROCm, CUDA and OpenACC extensions.
-The file `osu-micro-benchmarks-7.1.1/README` provides several examples
+The file `osu-micro-benchmarks-7.5.1/README` provides several examples
 of compiling with these extensions.
 
 We provide example build scripts for the benchmarks on selected systems.
